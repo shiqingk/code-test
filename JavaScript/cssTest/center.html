@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>各种居中方案测试</title>
+    <style>
+        .color-1 {
+            background-color: #009688;
+        }
+
+        .color-2 {
+            background-color: #5FB878;
+        }
+
+        .color-3 {
+            background-color: #393D49;
+        }
+
+        .color-4 {
+            background-color: #c2c2c2;
+        }
+
+        .color-5 {
+            background-color: #dddddd;
+        }
+
+        .width-30-percent {
+            width: 30%;
+        }
+
+        .pt100 {
+            padding-top: 100px;
+        }
+
+        /* 以上都是公共内容 */
+        .parent-1 {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 方案1 end */
+        .parent-2 {
+            display: flex;
+            width: 100%;
+        }
+
+        .child-2 {
+            margin: auto;
+        }
+
+        /* 方案2 end */
+
+        .parent-3 {
+            text-align: center;
+        }
+
+        /* 方案3 end*/
+        .parent-4 {
+            display: table;
+            width: 100%;
+        }
+
+        .child-4 {
+            display: table-cell;
+            vertical-align: middle;
+        }
+
+        /* 方案4 end */
+
+        .parent-5 {
+            padding: 0 200px 0 150px;
+        }
+
+        .child-5-left,
+        .child-5-middle,
+        .child-5-right {
+            position: relative;
+            float: left;
+        }
+
+        .child-5-left {
+            width: 150px;
+            margin-left: -100%;
+            left: -150px;
+        }
+
+        .child-5-middle {
+            width: 100%;
+        }
+
+        .child-5-right {
+            margin-left: -200px;
+            left: 200px;
+            width: 200px;
+        }
+
+        /* 方案5 end */
+        .parent-6 {
+            display: grid;
+            place-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div>以下是方案1</div>
+    <div class="color-1 parent-1">
+        <div class="color-2 width-30-percent child-1"> 方案1的特点，子div不用做什么设置，子div都是在屏幕中心的，两边可能出现较大空白</div>
+        <div class="color-4 width-30-percent child-1">子div2</div>
+        <div class="color-2 width-30-percent child-1">子div3</div>
+    </div>
+    <div class="pt100">以下是方案2</div>
+    <div class="color-4 parent-2">
+        <div class="color-1 width-30-percent child-2"> 方案2的特点，父div和子div，都需要设置，父级要设置为flex和指定宽度，子div只要设置margin:auto就行了
+        </div>
+        <div class="color-2 width-30-percent child-2">子div2</div>
+    </div>
+    <div class="pt100">以下是方案3</div>
+    <div class="color-5 parent-3">
+        方案3，设置div内文字居中，只需要在父级div上设置text-align:center就OK啦
+        <div class="color-1">方案3，有多个子div，在最外层那个设置就行了，text-align的样式会继承给子集</div>
+    </div>
+    <div class="pt100">以下是方案4</div>
+    <div class="color-1 parent-4">
+        <div class="color-5 width-30-percent child-4">方案4,略显麻烦，父级子级都要指定display样式</div>
+        <div class="color-3 width-30-percent child-4">子div2</div>
+    </div>
+    <div class="pt100">以下是方案5</div>
+    <div class="color-5 parent-5">
+        <div class="color-2 child-5-middle">
+            圣杯布局的写法，中间自适应，两边定宽,
+            圣杯布局的写法，中间自适应，两边定宽,
+            圣杯布局的写法，中间自适应，两边定宽,
+            圣杯布局的写法，中间自适应，两边定宽,
+            圣杯布局的写法，中间自适应，两边定宽,
+        </div>
+        <div class="color-1 child-5-left">左侧定宽左侧定宽左侧定宽左侧定宽左侧定宽左侧定宽左侧定宽左侧定宽左侧定宽</div>
+        <div class="color-4 child-5-right">右侧定宽右侧定宽右侧定宽右侧定宽右侧定宽右侧定宽右侧定宽右侧定宽右侧定宽</div>
+    </div>
+    <div class="pt100">以下是方案6</div>
+    <div class="color-5 parent-6">
+        <div class="color-1">竖直居中</div>
+        <div class="color-4">这是第二个子div</div>
+    </div>
+</body>
+
+</html>

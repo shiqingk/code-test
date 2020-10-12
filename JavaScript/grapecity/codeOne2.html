@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <title>制作一个输入组件</title>
+    <style>
+        textarea {
+            resize: none;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 16px;
+        }
+
+        #box {
+            padding: 5px;
+            border-style: solid;
+            border-color: red;
+            border-width: 1px 1px 1px 1px;
+        }
+
+        div {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 16px;
+        }
+
+        .width300 {
+            width: 300px;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <div id="box" class="width300">
+            <textarea id="input" oninput="textFocus()" type="text" style="width: 100px;overflow-y: hidden"
+                rows="1"></textarea>
+        </div>
+
+        <textarea id="hideArea" class="width300" style="position: absolute; visibility:hidden;" rows="1"></textarea>
+        <div id="hideDiv" style="position: absolute;visibility: hidden;"></div>
+    </div>
+</body>
+<script type="text/javascript">
+    let mainDiv = document.getElementById('main');
+    let input = document.getElementById('input');
+    let hideArea = document.getElementById('hideArea');
+    let hideDiv = document.getElementById('hideDiv');
+
+    function textFocus() {
+        hideDiv.innerHTML = hideArea.value = input.value;
+        const width = hideDiv.offsetWidth + 10;
+        if (width !== input.style.width && width < 300 && width > 100) {
+            input.style.width = width + 'px';
+        }
+        console.log(input.style.width);
+        const height = hideArea.scrollHeight + 'px';
+        if (height !== input.style.height) {
+            input.style.height = height;
+        }
+    }
+
+    // 块作用域
+    {
+        var a = 1;
+        let b = 2;
+        const c = 3;
+        // c = 4; // 报错
+
+        // let a = 'a';	// 报错  注：是上面 var a = 1; 那行报错
+        // var b = 'b';	// 报错：本行报错
+        // const a = 'a1';	// 报错  注：是上面 var a = 1; 那行报错
+        // let c = 'c';	// 报错：本行报错
+
+        var aa;
+        let bb;
+        // const cc; // 报错
+        console.log(a); // 1
+        console.log(b); // 2
+        console.log(c); // 3
+        console.log(aa); // undefined
+        console.log(bb); // undefined
+    }
+    console.log(a); // 1    
+</script>
+
+</html>

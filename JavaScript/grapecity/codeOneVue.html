@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>自动扩展的文本输入</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <style>
+        textarea {
+            resize: none;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 16px;
+        }
+
+        #bk {
+            width: 500px;
+            padding: 5px;
+            border-style: solid;
+            border-color: red;
+            border-width: 1px 1px 1px 1px;
+        }
+
+        div {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 16px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div id="bk">
+            <textarea @focus="textFocus" type="text" v-model="content" ref="input"
+                :style="{height: teaxtAreaHeight,width: teaxtAreaWidth}" rows="1"
+                style="overflow-y: hidden;"></textarea>
+        </div>
+        <textarea style="position: absolute; visibility:hidden; width: 500px;" ref="heightRuler" v-model="content"
+            rows="1"></textarea>
+        <div style="position: absolute;visibility:hidden;" ref="widthRuler">{{content}}</div>
+    </div>
+</body>
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            content: '',
+            teaxtAreaHeight: '',
+            teaxtAreaWidth: '120px'
+        },
+        methods: {
+            textFocus() {
+                document.addEventListener('keyup', () => {
+                    this.$nextTick(() => {
+                        const width = (this.$refs.widthRuler).offsetWidth + 10;
+                        console.log(width);
+                        if (width !== this.teaxtAreaWidth && width < 500 && width > 120) {
+                            this.teaxtAreaWidth = width + 'px';
+                        }
+                        const height = `${(this.$refs.heightRuler).scrollHeight}px`;
+                        if (height !== this.teaxtAreaHeight) {
+                            this.teaxtAreaHeight = height;
+                        }
+                    });
+                });
+            }
+        }
+    })
+</script>
+
+</html>

@@ -1,0 +1,7 @@
+dotnet/ProgramTest/.vs/*
+dotnet/ProgramTest/AbstractFactory/bin/*
+dotnet/ProgramTest/AbstractFactory/obj/*
+dotnet/ProgramTest/ArrangeCoins/obj/*
+dotnet/ProgramTest/AddBinary/obj/*
+dotnet/ProgramTest/LeetCode/obj/*
+.vs/*

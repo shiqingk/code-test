@@ -1,0 +1,82 @@
+<html>
+
+<head>
+    <title>制作一个输入组件</title>
+    <style>
+        #main {
+            width: 200px;
+            border: 1px solid crimson;
+            padding: 10px;
+        }
+
+        #input {
+            font-size: 16px;
+            font-family: arial;
+            border: 1px solid blue;
+            resize: none;
+        }
+
+        #hideSpan {
+            width: 200px;
+            font-size: 16px;
+            font-family: arial;
+            border: 1px solid olive;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+</html>
+
+<body>
+    <div id="main">
+        <textarea id="input" oninput="valChange()"></textarea>
+    </div>
+    <div>
+        <span id="hideSpan" class="hideSpan"></span>
+    </div>
+    <script>
+        var mainDiv = document.getElementById('main');
+        var input = document.getElementById('input');
+        var hideInput = document.getElementById('hideSpan');
+        input.style.width = '10px';
+        function valChange() {
+            console.log(input.style.width);
+            var val = input.value;
+            hideInput.innerHTML = val;
+            var maxWidth = getDivWidth() - 40;
+            var hideWidth = hideInput.offsetWidth;
+            if (hideWidth < maxWidth) {
+                input.style.width = hideWidth + 16;
+            }
+
+            var row = parseInt(hideWidth / (maxWidth - 40));
+            input.style.height = (row + 1) * 16;
+            setDivHeight(row * 16 + 16);
+        }
+
+        function widthChange() {
+            console.log(input.style.width);
+            var val = input.value;
+            hideInput.innerHTML = val;
+            var maxWidth = getDivWidth() - 40;
+            var hideWidth = hideInput.offsetWidth;
+            if (hideWidth < maxWidth) {
+                input.style.width = hideWidth + 16;
+            }
+        }
+
+
+        function getDivHeight() {
+            return mainDiv.offsetHeight;
+        }
+        function setDivHeight(h) {
+            mainDiv.style.height = h;
+        }
+        function getDivWidth() {
+            return mainDiv.offsetWidth;
+        }
+
+
+    </script>
+</body>
