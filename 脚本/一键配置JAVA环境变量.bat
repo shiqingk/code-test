@@ -2,6 +2,12 @@
 set regpath=HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Session Manager\Environment
 set javahome=C:\Program Files\Java\jdk1.8.0_181
 echo *                   请先修改第三行的jdk地址为你自己的jdk地址                   *
+if not exist %javahome% (
+	echo 文件夹%javahome%不存在
+	echo 请修改脚本中第三行的jdk地址，形如C:\Program Files\Java\jdk1.8.0_181
+	pause>nul
+	exit
+)
 rem LPY
 echo.
 echo ************************************************************
