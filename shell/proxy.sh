@@ -5,19 +5,21 @@ port=10801
 
 PROXY_HTTP="http://${hostip}:${port}"
 
-set_proxy(){
+PROXY_HTTP="http://127.0.0.1:10801"
+
+set_proxy() {
     export http_proxy="${PROXY_HTTP}"
     export HTTP_PROXY="${PROXY_HTTP}"
 
     export https_proxy="${PROXY_HTTP}"
     export HTTPS_proxy="${PROXY_HTTP}"
 
-    # 添加代理
-    git config --global http.proxy "${PROXY_HTTP}"
-    git config --global https.proxy "${PROXY_HTTP}"
+    # 添加代理,好像没什么用
+    #git config --global http.proxy "${PROXY_HTTP}"
+    #git config --global https.proxy "${PROXY_HTTP}"
 }
 
-unset_proxy(){
+unset_proxy() {
     unset http_proxy
     unset HTTP_PROXY
     unset https_proxy
@@ -28,24 +30,21 @@ unset_proxy(){
     git config --global --unset https.proxy
 }
 
-test_setting(){
+test_setting() {
     echo "Host ip:" ${hostip}
     echo "WSL ip:" ${wslip}
     echo "Current proxy:" $https_proxy
 }
 
-if [ "$1" = "set" ]
-then
+if [ "$1" = "set" ]; then
     set_proxy
     test_setting
 
-elif [ "$1" = "unset" ]
-then
+elif [ "$1" = "unset" ]; then
     unset_proxy
     test_setting
 
-elif [ "$1" = "test" ]
-then
+elif [ "$1" = "test" ]; then
     test_setting
 else
     echo "Unsupported arguments."
