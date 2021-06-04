@@ -47,6 +47,9 @@ f_help() {
         
         mirrors       change system mirrors
         update        update current e.sh shell
+    desc:
+    you can also download this script on other linux:
+        curl $g_e_url -o e.sh
 "
 }
 
