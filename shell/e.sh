@@ -209,6 +209,7 @@ f_update() {
         echo "e.sh file not found!"
         exit
     fi
+    rm -rf /tmp/e.sh
     curl $g_e_url -o /tmp/e.sh
     sleep 1
     echo "test new script start"
