@@ -20,8 +20,8 @@ g_e_url="https://raw.githubusercontent.com/shiqingk/some-codes/master/shell/e.sh
 g_tmp=""
 
 f_help() {
-    echo "v0.3
-    Usage:
+    echo "    v0.3
+    Usage: 
     e [options]
         .             append this shell to alias, then use as: e [options]
         -a            docker ps -a
@@ -111,13 +111,13 @@ f_init() {
         ;;
     upd)
         echo $g_update
-        $($g_update)
+        eval $g_update
         ;;
     upg)
         echo $g_update
         echo $g_upgrade
-        $($g_update)
-        $($g_upgrade)
+        eval $g_update
+        eval $g_upgrade
         ;;
     mirrors)
         bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
