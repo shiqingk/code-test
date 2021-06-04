@@ -20,7 +20,8 @@ g_e_url="https://raw.githubusercontent.com/shiqingk/some-codes/master/shell/e.sh
 g_tmp=""
 
 f_help() {
-    echo "Usage:
+    echo "v0.3
+    Usage:
     e [options]
         .             append this shell to alias, then use as: e [options]
         -a            docker ps -a
