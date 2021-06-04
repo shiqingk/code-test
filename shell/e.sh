@@ -15,27 +15,37 @@ g_upgrade=""
 g_remove=''
 
 g_v2="/etc/v2ray-agent"
+g_e_url="https://raw.githubusercontent.com/shiqingk/some-codes/master/shell/e.sh"
+
 g_tmp=""
 
 f_help() {
-    echo "    Usage:
+    echo "Usage:
     e [options]
         .             append this shell to alias, then use as: e [options]
-        -tls          cp crt from $g_pwd to $g_v2/tls/
-        d            docker 
-        -i            docker images
         -a            docker ps -a
-        -it pod       docker exec -it pod shell
-        tj            tail -f trojan log
+        -c            cat trojan json config
+        -i            docker images
+        -ef           ps -ef | grep key | grep key2
+        -it           docker exec -it pod shell
+        -rn           grep -rni xx
+        -net          netstat -ntulp
+        -tls          cp crt from $g_pwd to $g_v2/tls/
+        
+        t             tail -f xxx
+        dk            docker 
+        fd            find xx -iname xx
+        jd            enter jd module
         tg            tail -f trojan-go log
-        ps            ps -ef | grep key | grep key2
-        catj          cat trojan json config
+        tj            tail -f trojan log
+
         cpu           Top 10 programs for cpu usage
         mem           Top 10 programs for memery usage
-        mirrors       change system mirrors
         upd           apt update  | yum update
         upg           apt upgrade | yum upgrade
-        jd            enter jd module
+        
+        mirrors       change system mirrors
+        update        update current e.sh shell
 "
 }
 
@@ -49,25 +59,42 @@ f_init() {
         fi
         source ~/.bashrc
         ;;
-    -tls)
-        cptls
+    -a)
+        docker ps -a
         ;;
-    d)
-        f_docker
+    -c)
+        cat $(f_ps_last_col trojan json)
         ;;
     -i)
         docker images
         ;;
-    -a)
-        docker ps -a
+    -ef)
+        f_ps $g_arg2 $g_arg3
         ;;
     -it)
-        if [ ! -n "$g_arg3" ]; then
-            g_arg3="sh"
-        else
-            echo "script is "$g_arg3
-        fi
-        docker exec -it $g_arg2 $g_arg3
+        f_docker_exec
+        ;;
+    -net)
+        echo "run: netstat -ntulp"
+        netstat -ntulp
+        ;;
+    -tls)
+        cptls
+        ;;
+    -rn)
+        grep -rni "$g_arg2"
+        ;;
+    t)
+        tail -f $g_arg2
+        ;;
+    dk)
+        f_docker
+        ;;
+    fd)
+        find $g_arg2 -iname $g_arg3
+        ;;
+    jd)
+        f_jd
         ;;
     tg)
         f_tail_trojan
@@ -75,20 +102,11 @@ f_init() {
     tj)
         journalctl -xen -u trojan --no-pager -f
         ;;
-    ps)
-        f_ps $g_arg2 $g_arg3
-        ;;
-    catj)
-        cat $(f_ps_last_col trojan json)
-        ;;
     cpu)
         f_cpu_mem 3
         ;;
     mem)
         f_cpu_mem 4
-        ;;
-    mirrors)
-        bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
         ;;
     upd)
         echo $g_update
@@ -100,12 +118,14 @@ f_init() {
         $($g_update)
         $($g_upgrade)
         ;;
-    jd)
-        f_jd
+    mirrors)
+        bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
         ;;
-    net)
-        echo "run: netstat -ntulp"
-        netstat -ntulp
+    update)
+        f_update
+        ;;
+    test)
+        echo "test OK!"
         ;;
     *)
         f_help
@@ -121,35 +141,39 @@ cptls() {
     if [ ! -d $g_v2/tls/ ]; then
         mdir $g_v2/tls/
     fi
-
-    cp -f $g_pwd/* $g_v2/tls/
+    ls -la $g_pwd/*.crt
+    ls -la $g_pwd/*.pem
+    cp -f $g_pwd/*.crt $g_v2/tls/
+    cp -f $g_pwd/*.pem $g_v2/tls/
 }
 
 f_docker() {
     if [ ! -n "$g_arg2" ]; then
         g_arg2=""
+    fi
+    if [ ! -n "$g_arg3" ]; then
         g_arg3=""
+    fi
+    if [ ! -n "$g_arg4" ]; then
         g_arg4=""
+    fi
+    if [ ! -n "$g_arg5" ]; then
         g_arg5=""
-        g_arg6=""
-    elif [ ! -n "$g_arg3" ]; then
-        g_arg3=""
-        g_arg4=""
-        g_arg5=""
-        g_arg6=""
-    elif [ ! -n "$g_arg4" ]; then
-        g_arg4=""
-        g_arg5=""
-        g_arg6=""
-    elif [ ! -n "$g_arg5" ]; then
-        g_arg5=""
-        g_arg6=""
-    elif [ ! -n "$g_arg6" ]; then
+    fi
+    if [ ! -n "$g_arg6" ]; then
         g_arg6=""
     fi
     docker $g_arg2 $g_arg3 $g_arg4 $g_arg5 $g_arg6
 }
-
+f_docker_exec() {
+    if [ ! -n "$g_arg3" ]; then
+        g_arg3="sh"
+    fi
+    if [ ! -n "$g_arg4" ]; then
+        g_arg4="sh"
+    fi
+    docker exec -it $g_arg2 $g_arg3 $g_arg4
+}
 f_tail_trojan() {
     log_path=$g_v2/trojan/trojan.log
     if [ ! -n "$log_path" ]; then
@@ -173,6 +197,31 @@ f_ps_last_col() {
 f_cpu_mem() {
     ps aux | head -1
     ps aux | grep -v PID | sort -rn -k +$1 | head
+}
+
+f_update() {
+    path=$(cat ~/.bashrc | grep '/e.sh')
+    path=${path%?}
+    path=${path##*\'}
+    echo "$path"
+    if [ ! -n "$path" ]; then
+        echo "e.sh file not found!"
+        exit
+    fi
+    curl $g_e_url -o /tmp/e.sh
+    sleep 1
+    echo "test new script start"
+    chmod 777 /tmp/e.sh
+    /tmp/e.sh test
+    echo "test new script end"
+    read -p "is replace $path ?(y/n) $1: " g_tmp
+    if [[ $g_tmp =~ "y" ]]; then
+        mv /tmp/e.sh $path
+        cp -f $path /tmp/e.bak.sh
+        chmod 777 $path
+        echo "update new script success"
+    fi
+    echo "end"
 }
 
 f_check_system() {
@@ -220,7 +269,7 @@ f_check_system() {
 }
 
 f_jd() {
-    echo "    Usage:
+    echo "Usage:
     1.rebuild jd container
     2.run all jd_*.js with nohup
     "
@@ -246,7 +295,7 @@ f_jd() {
 }
 
 f_rebuild_jd() {
-    echo "    input the path of path, such as this, so input /root/jd 
+    echo "input the path of path, such as this, so input /root/jd 
     and full path like this
         /root/jd
         /root/jd/config
