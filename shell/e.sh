@@ -216,7 +216,7 @@ f_update() {
     echo "test new script end"
     read -p "is replace $path ?(y/n) $1: " g_tmp
     if [[ $g_tmp =~ "y" ]]; then
-        mv /tmp/e.sh $path
+        mv -f /tmp/e.sh $path
         cp -f $path /tmp/e.bak.sh
         chmod 777 $path
         echo "update new script success"
