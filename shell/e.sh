@@ -178,7 +178,7 @@ f_docker_exec() {
         g_arg3="sh"
     fi
     if [ ! -n "$g_arg4" ]; then
-        g_arg4="sh"
+        g_arg4=""
     fi
     docker exec -it $g_arg2 $g_arg3 $g_arg4
 }
