@@ -41,6 +41,7 @@ f_help() {
         tj            tail -f trojan log
 
         cpu           Top 10 programs for cpu usage
+        logs          docker logs -f xxx
         mem           Top 10 programs for memery usage
         upd           apt update  | yum update
         upg           apt upgrade | yum upgrade
@@ -111,6 +112,9 @@ f_init() {
         ;;
     mem)
         f_cpu_mem 4
+        ;;
+    logs)
+        docker logs -f $g_arg2
         ;;
     upd)
         echo $g_update
