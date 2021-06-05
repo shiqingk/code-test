@@ -1,4 +1,5 @@
 #!/bin/bash
+export LANG=en_US.UTF-8
 
 g_pwd=$(pwd)
 g_arg1=$1
@@ -20,8 +21,8 @@ g_e_url="https://raw.githubusercontent.com/shiqingk/some-codes/master/shell/e.sh
 g_tmp=""
 
 f_help() {
-    echo "    v0.3
-    Usage: 
+    echo "
+    Usage: v0.3
     e [options]
         .             append this shell to alias, then use as: e [options]
         -a            docker ps -a
@@ -46,8 +47,9 @@ f_help() {
         upd           apt update  | yum update
         upg           apt upgrade | yum upgrade
         
-        mirrors       change system mirrors
+        nohup         run shell with nohup
         update        update current e.sh shell
+        mirrors       change system mirrors
     desc:
         you can also download this script on other linux:
             curl $g_e_url -o e.sh
@@ -128,6 +130,9 @@ f_init() {
         ;;
     mirrors)
         bash <(curl -sSL https://gitee.com/SuperManito/LinuxMirrors/raw/main/ChangeMirrors.sh)
+        ;;
+    nohup)
+        f_nohup
         ;;
     update)
         f_update
@@ -296,6 +301,7 @@ f_jd() {
         echo "docker exec jd bash -c 'cd /jd/scripts; ls jd_*.js | xargs -i /jd/jd.sh {} now'" >/tmp/jd_run.sh
         chmod 777 /tmp/jd_run.sh
         nohup /tmp/jd_run.sh >/tmp/jd.log 2>&1 &
+        echo "nohup finished"
         ;;
     *)
         f_jd
@@ -346,6 +352,13 @@ f_rebuild_jd() {
     #     --cpu-period=1000000 --cpu-quota=800000 \
     #     noobx/jd:gitee
     f_jd
+}
+
+f_nohup() {
+    rm -rf /tmp/tmp.sh
+    echo "$g_arg2" >/tmp/tmp.sh
+    nohup /tmp/tmp.sh >/tmp/tmp.log 2>&1 &
+    echo "nohup end"
 }
 
 pass() {
