@@ -200,7 +200,7 @@ f_ps() {
     key=$1
     key2=$2
 
-    ps -ef | grep "$key" | grep "$key2" | grep -vE "grep|sh ps $key|sh ps $key2"
+    ps -ef | grep "$key" | grep "$key2" | grep -vE "grep|sh -ef $key"
 }
 
 f_ps_last_col() {
@@ -348,8 +348,8 @@ f_rebuild_jd() {
     #     --name jd \
     #     --hostname jd \
     #     --restart always \
-    #     -m 400M --memory-swap -1 \
-    #     --cpu-period=1000000 --cpu-quota=800000 \
+    #     -m 300M --memory-swap -1 \
+    # --cpu-period=1000000 --cpu-quota=900000 \
     #     noobx/jd:gitee
     f_jd
 }
